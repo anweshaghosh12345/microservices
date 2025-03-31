@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
-        String randomId= UUID.randomUUID().toString();
-        user.setUserId(randomId);
+//        String randomId= UUID.randomUUID().toString();
+//        user.setUserId(randomId);
         return userRepository.save(user);
     }
 
@@ -34,13 +34,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String id) {
+    public User getUser(Long id) {
         return userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User with " +
                 "given id is not found on Server !! :"+id));
     }
 
     @Override
-    public Void removeUser(String user) {
+    public Void removeUser(Long user) {
 
         userRepository.deleteById(user);
         return null;

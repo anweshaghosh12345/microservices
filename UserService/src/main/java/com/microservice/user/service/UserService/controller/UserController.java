@@ -24,7 +24,7 @@ public class UserController {
     }
 //    Single User get
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getSingleUser(@PathVariable String userId){
+    public ResponseEntity<User> getSingleUser(@PathVariable Long userId){
        User user= userService.getUser(userId);
        return ResponseEntity.ok(user);
     }
@@ -39,7 +39,7 @@ public class UserController {
     }
 //    Delete user
     @PostMapping("/delete/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable String userId){
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId){
         User user= userService.getUser(userId);
         if(user!=null)
         {
