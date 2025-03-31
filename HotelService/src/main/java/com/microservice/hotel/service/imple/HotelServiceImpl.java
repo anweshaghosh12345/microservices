@@ -28,8 +28,8 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public Hotel create(Hotel hotel) {
-        String hotelId=UUID.randomUUID().toString();
-        hotel.setId(hotelId);
+//        String hotelId=UUID.randomUUID().toString();
+//        hotel.setId(hotelId);
         return hotelRepository.save(hotel);
     }
 
@@ -39,13 +39,13 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public Hotel getSingle(String id) {
+    public Hotel getSingle(Long id) {
         return hotelRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Hotel not found"));
     }
 
     @Override
-    public String delete(String id) {
+    public String delete(Long id) {
         hotelRepository.deleteById(id);
         return "hotel deleted" ;
     }

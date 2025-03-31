@@ -9,8 +9,8 @@ public interface HotelService {
 //    get all
     List<Hotel> getAll();
 //    get single
-    Hotel getSingle(String id);
+    Hotel getSingle(Long id);
 
 //    delete
-    String delete(String id);
+    String delete(Long id);
 }

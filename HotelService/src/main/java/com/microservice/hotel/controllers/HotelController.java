@@ -34,7 +34,7 @@ public class HotelController {
 //    get one
 
     @GetMapping("/getOne/{hotelId}")
-    public ResponseEntity<Hotel> getOne(@PathVariable String hotelId){
+    public ResponseEntity<Hotel> getOne(@PathVariable Long hotelId){
         Hotel hotel1=hotelService.getSingle(hotelId);
 //        if(hotel1!=null)
         return ResponseEntity.status(HttpStatus.OK).body(hotel1);
@@ -45,7 +45,7 @@ public class HotelController {
 //    delete
 
     @PostMapping("/delete/{hotelId}")
-    public ResponseEntity<String> deletehotel(@PathVariable String hotelId){
+    public ResponseEntity<String> deletehotel(@PathVariable Long hotelId){
         if(hotelService.getSingle(hotelId)!=null)
         {
             hotelService.delete(hotelId);
