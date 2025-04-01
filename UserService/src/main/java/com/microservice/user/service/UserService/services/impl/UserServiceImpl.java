@@ -55,13 +55,13 @@ public class UserServiceImpl implements UserService {
 //                    ("http://localhost:8083/ratings/users/ratingByUserId/"+user.getUserId(),
 //                            ArrayList.class);
             Rating[] ratingsofUsers=restTemplate.getForObject
-                    ("http://localhost:8083/ratings/users/ratingByUserId/"+user.getUserId(),
+                    ("http://RATING-SERVICE/ratings/users/ratingByUserId/"+user.getUserId(),
                             Rating[].class);
             List<Rating> ratings=Arrays.stream(ratingsofUsers).toList();
             List<Rating> ratingList = new ArrayList<>();
             for (Rating rating : ratings) {
                 Hotel hotel = restTemplate.getForObject(
-                        "http://localhost:8082/hotels/getOne/" + rating.getHotelId(), Hotel.class);
+                        "http://HOTEL-SERVICE/hotels/getOne/" + rating.getHotelId(), Hotel.class);
                 rating.setHotel(hotel);
                 ratingList.add(rating);
             }
@@ -79,13 +79,13 @@ public class UserServiceImpl implements UserService {
 //        fetch ratings of the above user from rating service
 //    http://localhost:8083/ratings/users/ratingByUserId/5
         Rating[] ratingsofUsers=restTemplate.getForObject
-                ("http://localhost:8083/ratings/users/ratingByUserId/"+user.getUserId(),
+                ("http://RATING-SERVICE/ratings/users/ratingByUserId/"+user.getUserId(),
                 Rating[].class);
         List<Rating> ratings=Arrays.stream(ratingsofUsers).toList();
         List<Rating> ratingList = new ArrayList<>();
         for (Rating rating : ratings) {
             Hotel hotel = restTemplate.getForObject(
-                    "http://localhost:8082/hotels/getOne/" + rating.getHotelId(), Hotel.class);
+                    "http://HOTEL-SERVICE/hotels/getOne/" + rating.getHotelId(), Hotel.class);
             rating.setHotel(hotel);
             ratingList.add(rating);
         }
