@@ -15,4 +15,7 @@ public interface RatingService {
     List<Rating> getRatingsByHotelId(Long hotelId);
 //    delete Hotel by id
     String delete(Long id);
+
+//update by Id
+    Rating update(Long ratingId, Rating rating);
 }

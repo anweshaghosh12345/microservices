@@ -4,19 +4,16 @@ import com.microservice.user.service.UserService.entities.Hotel;
 import com.microservice.user.service.UserService.entities.Rating;
 import com.microservice.user.service.UserService.entities.User;
 import com.microservice.user.service.UserService.exceptions.ResourceNotFoundException;
+import com.microservice.user.service.UserService.external.service.HotelService;
+import com.microservice.user.service.UserService.external.service.RatingService;
 import com.microservice.user.service.UserService.repository.UserRepository;
 import com.microservice.user.service.UserService.services.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,20 +25,29 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RestTemplate restTemplate;
 
-//    private Logger logg= LoggerFactory.getLogger(UserServiceImpl.class);
+    @Autowired
+    private HotelService hotelService;
 
-//    public UserServiceImpl(RestTemplate restTemplate) {
-//        this.restTemplate = restTemplate;
-//    }
-//    public UserServiceImpl(UserRepository userRepository) {
-//        this.userRepository = userRepository;
-//    }
+    @Autowired
+    private RatingService ratingService;
 
     @Override
     public User saveUser(User user) {
 //        String randomId= UUID.randomUUID().toString();
 //        user.setUserId(randomId);
         return userRepository.save(user);
+    }
+
+    @Override
+    public Rating createRating(Rating rating){
+        Rating rating1=Rating.builder()
+                .rating(rating.getRating())
+                .userId(rating.getUserId())
+                        .hotelId(rating.getHotelId())
+                                .feedback(rating.getFeedback())
+                                        .build();
+        Rating rating2= ratingService.createRating(rating1);
+        return rating2;
     }
 
     @Override
@@ -54,14 +60,16 @@ public class UserServiceImpl implements UserService {
 //            ArrayList<Rating> ratingsofUsers=restTemplate.getForObject
 //                    ("http://localhost:8083/ratings/users/ratingByUserId/"+user.getUserId(),
 //                            ArrayList.class);
-            Rating[] ratingsofUsers=restTemplate.getForObject
-                    ("http://RATING-SERVICE/ratings/users/ratingByUserId/"+user.getUserId(),
-                            Rating[].class);
-            List<Rating> ratings=Arrays.stream(ratingsofUsers).toList();
+//            Rating[] ratingsofUsers=restTemplate.getForObject
+//                    ("http://RATING-SERVICE/ratings/users/ratingByUserId/"+user.getUserId(),
+//                            Rating[].class);
+            List<Rating> ratings=ratingService.getRating(user.getUserId());
+//            List<Rating> ratings=Arrays.stream(ratingsofUsers).toList();
             List<Rating> ratingList = new ArrayList<>();
             for (Rating rating : ratings) {
-                Hotel hotel = restTemplate.getForObject(
-                        "http://HOTEL-SERVICE/hotels/getOne/" + rating.getHotelId(), Hotel.class);
+//                Hotel hotel = restTemplate.getForObject(
+//                        "http://HOTEL-SERVICE/hotels/getOne/" + rating.getHotelId(), Hotel.class);
+                Hotel hotel=hotelService.getHotel(rating.getHotelId());
                 rating.setHotel(hotel);
                 ratingList.add(rating);
             }
@@ -78,14 +86,16 @@ public class UserServiceImpl implements UserService {
                 "given id is not found on Server !! :"+id));
 //        fetch ratings of the above user from rating service
 //    http://localhost:8083/ratings/users/ratingByUserId/5
-        Rating[] ratingsofUsers=restTemplate.getForObject
-                ("http://RATING-SERVICE/ratings/users/ratingByUserId/"+user.getUserId(),
-                Rating[].class);
-        List<Rating> ratings=Arrays.stream(ratingsofUsers).toList();
+//        Rating[] ratingsofUsers=restTemplate.getForObject
+//                ("http://RATING-SERVICE/ratings/users/ratingByUserId/"+user.getUserId(),
+//                Rating[].class);
+        List<Rating> ratings=ratingService.getRating(user.getUserId());
+//        List<Rating> ratings=Arrays.stream(ratingsofUsers).toList();
         List<Rating> ratingList = new ArrayList<>();
         for (Rating rating : ratings) {
-            Hotel hotel = restTemplate.getForObject(
-                    "http://HOTEL-SERVICE/hotels/getOne/" + rating.getHotelId(), Hotel.class);
+            Hotel hotel=hotelService.getHotel(rating.getHotelId());
+//            Hotel hotel = restTemplate.getForObject(
+//                    "http://HOTEL-SERVICE/hotels/getOne/" + rating.getHotelId(), Hotel.class);
             rating.setHotel(hotel);
             ratingList.add(rating);
         }
@@ -101,7 +111,7 @@ public class UserServiceImpl implements UserService {
 ////           return rating
 //            return rating;
 //        } ).collect(Collectors.toList());
-        System.out.println("ratings of users: "+ratingsofUsers);
+//        System.out.println("ratings of users: "+ratingsofUsers);
 
         user.setRating(ratingList);
         return user;

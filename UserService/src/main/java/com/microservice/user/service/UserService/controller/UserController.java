@@ -1,5 +1,6 @@
 package com.microservice.user.service.UserService.controller;
 
+import com.microservice.user.service.UserService.entities.Rating;
 import com.microservice.user.service.UserService.entities.User;
 import com.microservice.user.service.UserService.services.UserService;
 import java.util.List;
@@ -49,5 +50,12 @@ public class UserController {
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
 
+    }
+
+//    create Rating
+    @PostMapping("/createRating")
+    public ResponseEntity<Rating> createRating(@RequestBody Rating rating){
+        Rating rating1 =userService.createRating(rating);
+        return ResponseEntity.status(HttpStatus.CREATED).body(rating1);
     }
 }

@@ -46,4 +46,17 @@ public class RatingServiceImpl implements RatingService {
         ratingRepository.deleteById(id);
         return "Ratings deleted";
     }
+
+    @Override
+    public Rating update(Long ratingId, Rating rating) {
+
+        Rating rating1=ratingRepository.findById(ratingId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ratings not found"));
+        rating1.setRating(rating.getRating());
+        rating1.setHotelId(rating.getHotelId());
+        rating1.setUserId(rating.getUserId());
+        rating1.setFeedback(rating.getFeedback());
+        Rating rating2=ratingRepository.save(rating1);
+        return rating2;
+    }
 }

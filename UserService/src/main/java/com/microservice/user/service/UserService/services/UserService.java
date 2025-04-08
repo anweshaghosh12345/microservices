@@ -1,5 +1,6 @@
 package com.microservice.user.service.UserService.services;
 
+import com.microservice.user.service.UserService.entities.Rating;
 import com.microservice.user.service.UserService.entities.User;
 import java.util.List;
 
@@ -16,5 +17,8 @@ public interface UserService {
 //    delete user
     Void removeUser(Long userId);
 //    Update user
+
+//    create Rating
+    Rating createRating(Rating rating);
 
 }
