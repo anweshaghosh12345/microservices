@@ -10,7 +10,7 @@
         <module name="Service-Registry" />
         <module name="ConfigServer" />
       </profile>
-      <profile name="Annotation profile for UserService" enabled="true">
+      <profile name="Annotation profile for Spring-Security-Service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -19,10 +19,14 @@
         </processorPath>
         <module name="HotelService" />
         <module name="APIGateway" />
+        <module name="Spring-Security-Service" />
         <module name="UserService" />
         <module name="RatingService" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="spring_security" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -31,7 +35,9 @@
       <module name="HotelService" options="-parameters" />
       <module name="RatingService" options="-parameters" />
       <module name="Service-Registry" options="-parameters" />
+      <module name="Spring-Security-Service" options="-parameters" />
       <module name="UserService" options="-parameters" />
+      <module name="spring_security" options="-parameters" />
     </option>
   </component>
 </project>

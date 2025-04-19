@@ -6,6 +6,10 @@ import com.microservice.user.service.UserService.services.UserService;
 import java.util.List;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
+
     @Autowired
     private UserService userService;
 
@@ -25,23 +32,33 @@ public class UserController {
        User user1= userService.saveUser(user);
        return ResponseEntity.status(HttpStatus.CREATED).body(user1);
     }
+
+    int retryCount=1;
 //    Single User get
     @GetMapping("/{userId}")
-    @CircuitBreaker(name="ratingHotelBreaker",fallbackMethod = "ratingHotelFallback")
+//    @CircuitBreaker(name="ratingHotelBreaker",fallbackMethod = "ratingHotelFallback")
+//    @Retry(name="ratingHotelService", fallbackMethod = "ratingHotelFallback")
+    @RateLimiter(name="userRateLimiter",fallbackMethod = "ratingHotelFallback")
     public ResponseEntity<User> getSingleUser(@PathVariable Long userId){
        User user= userService.getUser(userId);
+        System.out.println("retryCount: "+retryCount);
+        retryCount++;
        return ResponseEntity.ok(user);
     }
 
 //    creating method for fall back circuitbreaker
 
+
     public ResponseEntity<User>ratingHotelFallback(Long userId,Exception ex){
-        System.out.println("Fallback is executed as service is down : "+ex.getMessage() );
+        System.out.println("Fallback is executed as service is down : "+ex.getMessage());
+//        log.info("retryCount : ",retryCount);
+//        System.out.println(ex.getMessage());
+        Long i=123l;
         User user=User.builder()
                 .email("dummy@gmail.com")
                 .name("Dummy")
                 .about("dummy user")
-                .userId(123L)
+                .userId(++i)
                 .build();
         return new ResponseEntity<>(user,HttpStatus.OK);
     }

@@ -10,7 +10,14 @@
         <option value="$PROJECT_DIR$/../Service-Registry/pom.xml" />
         <option value="$PROJECT_DIR$/../APIGateway/pom.xml" />
         <option value="$PROJECT_DIR$/../ConfigServer/pom.xml" />
+        <option value="$USER_HOME$/Downloads/spring_security/spring_security/pom.xml" />
+        <option value="$PROJECT_DIR$/../Spring-Security-Service/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$USER_HOME$/Downloads/spring_security/spring_security/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="corretto-17 (4)" project-jdk-type="JavaSDK" />
