@@ -11,8 +11,6 @@ import org.springframework.web.client.RestTemplate;
 @EnableFeignClients
 public class UserServiceApplication {
 
-
-
 	public static void main(String[] args) {
 		System.out.println("App Started");
 		SpringApplication.run(UserServiceApplication.class, args);

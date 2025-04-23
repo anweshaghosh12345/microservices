@@ -12,16 +12,28 @@ Spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/users/**
+          filters:
+            - AuthenticationFilter
 
         - id: HOTEL-SERVICE
           uri: lb://HOTEL-SERVICE
           predicates:
             - Path=/hotels/**,/staffs/**
+          filters:
+          - AuthenticationFilter
 
         - id: RATING-SERVICE
           uri: lb://RATING-SERVICE
           predicates:
             - Path=/ratings/**
+          filters:
+              - AuthenticationFilter
+
+        - id: SECURITY-SERVICE
+          uri: lb://SECURITY-SERVICE
+          predicates:
+            - Path=/auth/**
+
 
 
 eureka:
